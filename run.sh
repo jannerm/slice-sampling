@@ -1,1 +1,1 @@
-bokeh serve --show elliptical.py 
+bokeh serve --show slice.py 
