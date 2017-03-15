@@ -10,7 +10,7 @@ from bokeh.models.widgets import PreText
 
 np.random.seed(1)
 
-class Elliptical:
+class SliceSampler:
 	def __init__(self, x_low, x_high, x_step=0.01):
 		self.mode = -1
 		self.num_modes = 5
@@ -204,9 +204,6 @@ class Figure:
 		self.horizontal = self.workspace.line(x=[0,0], y=[0,0], color="red", line_width=2)
 		self.slice = self.workspace.line(x=[0,0], y=[0,0], color="black", line_width=4)
 		self.patches = self.workspace.patches(patch_xs, patch_ys, alpha=.3, line_width=2)
-
-		## yeah, this is awful. I don't know 
-		## how to center vertically in bokeh
 		self.filler1 = PreText(text='', width=200, height=250)
 		self.filler2 = PreText(text='', width=200, height=250)
 
@@ -222,7 +219,7 @@ class Figure:
 		curdoc().add_root(row(column(self.filler1, self.button), self.workspace, column(self.filler2, self.radio)))
 
 	def radio_handler(self, new):
-		e.change_update_fn(new)
+		sampler.change_update_fn(new)
 
 	def refresh(self, X, Y, curr_x, fx, curr_y, horizontal, slice_endpoints, patch_xs, patch_ys, mode):
 		self.point.data_source.data = {'x': [curr_x], 
@@ -245,11 +242,11 @@ class Figure:
 		self.patches.data_source.data = {'xs': patch_xs, 'ys': patch_ys}
 
 	def callback(self):
-	    e.next_step()
+	    sampler.next_step()
 
 x_low, x_high = -8, 8
 
-e = Elliptical(x_low, x_high)
+sampler = SliceSampler(x_low, x_high)
 
 
 
